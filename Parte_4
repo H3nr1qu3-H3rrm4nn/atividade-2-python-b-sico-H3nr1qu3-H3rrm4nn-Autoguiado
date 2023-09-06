@@ -1,0 +1,27 @@
+import glob, os
+import pandas as pd
+
+def real_all_databank_core_csv(directory):
+    """
+    read all csv files in the specified baseball databank directory and
+    populate a dictionary storing each of the tables keyed to its name
+
+    lê todos os arquivos csv no diretório do banco de dados especificado e
+    popula um dicionario armazenando cada (mesa?) tabela chaveada ao seu nome
+    """
+    dfs={}
+    files = glob.glob('{}/*.csv'.format(directory))
+    for f in files:
+        d, name =os.path.split(f)
+        table = os.path.splittext(name)[0]
+        df = pd.read_csv(f)
+        dfs[table] = df
+    return dfs
+
+bbdfs = real_all_databank_core_csv('data/baseballdatabank/core')
+
+batting = bbdfs['Batting']
+pitching = bbdfs['Pitching']
+teams = bbdfs['Teams']
+
+batting.head()
