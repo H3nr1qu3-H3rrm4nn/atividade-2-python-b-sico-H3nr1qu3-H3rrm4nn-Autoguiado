@@ -1,7 +1,9 @@
-import glob, os
+import glob as glob
+import os as os
 import pandas as pd
 
-def real_all_databank_core_csv(directory):
+
+def read_all_databank_core_csv(directory):
     """
     read all csv files in the specified baseball databank directory and
     populate a dictionary storing each of the tables keyed to its name
@@ -9,16 +11,16 @@ def real_all_databank_core_csv(directory):
     lê todos os arquivos csv no diretório do banco de dados especificado e
     popula um dicionario armazenando cada (mesa?) tabela chaveada ao seu nome
     """
-    dfs={}
+    dfs = {}
     files = glob.glob('{}/*.csv'.format(directory))
     for f in files:
-        d, name =os.path.split(f)
-        table = os.path.splittext(name)[0]
+        d, name = os.path.split(f) #porque declarar esse d?
+        table = os.path.splitext(name)[0]
         df = pd.read_csv(f)
         dfs[table] = df
     return dfs
 
-bbdfs = real_all_databank_core_csv('data/baseballdatabank/core')
+bbdfs = read_all_databank_core_csv('/workspaces/atividade-2-python-b-sico-H3nr1qu3-H3rrm4nn-Autoguiado/Data/baseballdatabank/core') #esse caminho funciona? já que o bd está neste repositório?
 
 batting = bbdfs['Batting']
 pitching = bbdfs['Pitching']

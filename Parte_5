@@ -1,0 +1,35 @@
+from sqlalchemy import create_engine
+import glob, os
+import pandas as pd
+
+def read_all_databank_core_csv(directory):
+    """
+    read all csv files in the specified baseball databank directory and
+    populate a dictionary storing each of the tables keyed to its name
+    """
+    dfs = {}
+    files = glob.glob('{}/*.csv'.format(directory))
+    for f in files:
+        d, name = os.path.split(f)
+        table = os.path.splitext(name)[0]
+        df = pd.read_csv(f)
+        dfs[table] = df
+    return dfs
+
+bbdfs = read_all_databank_core_csv('data/baseballdatabank/core')
+engine = create_engine('sqlite:///mydb.sqlite')
+def write_all_tables_to_sqlite(dfs, sql_filename):
+    engine = create_engine('sqlite:///{}'.format(sql_filename))
+    for table, df in dfs.items():
+        df.to_sql(table, con=engine, index=False)
+    engine.dispose()
+    sqlite_filename = 'bbdb.sqlite'
+try:
+    os.remove(sqlite_filename)
+except FileNotFoundError:
+    pass
+
+write_all_tables_to_sqlite(bbdfs, sqlite_filename)
+engine = create_engine('sqlite:///bbdb.sqlite')
+most_hits_in_a_year = pd.read_sql_query('select * from batting order by H desc limit 10', engine)
+most_hits_in_a_year
