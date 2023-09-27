@@ -1,0 +1,6 @@
+import glob, os
+import pandas as pd
+import openpyxl
+
+df16 = pd.read_excel('/workspaces/atividade-2-python-b-sico-H3nr1qu3-H3rrm4nn-Autoguiado/Fires_100.xlsx', sheet_name='2016')
+print (df16.head())

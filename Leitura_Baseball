@@ -1,7 +1,5 @@
-import glob as glob
-import os as os
+import glob, os
 import pandas as pd
-
 
 def read_all_databank_core_csv(directory):
     """
@@ -12,10 +10,12 @@ def read_all_databank_core_csv(directory):
     popula um dicionario armazenando cada (mesa?) tabela chaveada ao seu nome
     """
     dfs = {}
-    files = glob.glob('{}/*.csv'.format(directory))
+    files = glob.glob('{}/*.csv'.format(directory)) #juntou todos os arquivos
     for f in files:
-        d, name = os.path.split(f) #porque declarar esse d?
-        table = os.path.splitext(name)[0]
+        print (files)
+        d, name = os.path.split(f)  #separou o caminho do nome do arquivo.
+        print (files)
+        table = os.path.splitext(name)[0] #separou o nome do caminho da extensão (criando uma lista) e utilizou apenas o nome do arquivo sem a extensão
         df = pd.read_csv(f)
         dfs[table] = df
     return dfs
@@ -26,4 +26,5 @@ batting = bbdfs['Batting']
 pitching = bbdfs['Pitching']
 teams = bbdfs['Teams']
 
-batting.head()
+
+print (batting.tail())
